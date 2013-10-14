@@ -1,0 +1,92 @@
+/* bootstrap overrides */
+
+body
+{
+	padding-top: 70px; /* nav fixed top */
+	padding-bottom: 70px; /* nav fixed bottom */
+}
+
+button, input, select, textarea
+{
+	outline: none !important;
+}
+
+.container
+{
+	max-width: none !important; /* disable responsive */
+	width: 1080px; /* disable responsive */
+}
+
+
+/* helper */
+
+.center
+{
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
+.un-float
+{
+	float: none !important;
+}
+
+.un-margin
+{
+	margin: 0 !important;
+}
+
+.un-padding
+{
+	padding: 0 !important;
+}
+
+
+/* layout */
+
+#footer
+{
+	min-height: 30px;
+	height: 30px;
+}
+
+#footer a
+{
+	line-height: 30px;
+	font-size: 15px;
+}
+
+
+
+.ca-step
+{
+	height: 20px;
+	border-top: 1px solid black;
+}
+
+.ca-step:last-child
+{
+	border-bottom: 1px solid black;
+}
+
+.ca-cell
+{
+	height: 100%;
+	display: inline-block;
+	border-left: 1px solid black;
+}
+
+.ca-cell:last-child
+{
+	border-right: 1px solid black;
+}
+
+.ca-cell-on
+{
+	background-color: black;
+}
+
+.ca-cell-off
+{
+	
+}
