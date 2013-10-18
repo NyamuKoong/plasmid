@@ -5,12 +5,13 @@
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="./css/lib/bootstrap.css" />
 		<link rel="stylesheet" href="./css/lib/non-responsive.css" />
-		<link rel="stylesheet" href="./css/plasmid.css" />
+		<link rel="stylesheet" href="./css/style.css" />
 		<script src="./js/lib/modernizr.js"></script>
 		<script src="./js/lib/jquery.js"></script>
 		<script src="./js/lib/bootstrap.js"></script>
 		<script src="./js/lib/anchor.js"></script>
 		<script src="./js/plasmid.js"></script>
+		<script src="./js/script.js"></script>
 	</head>
 	<body data-spy="scroll" data-target="#header" data-offset="70">
 		<nav id="header" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -21,16 +22,16 @@
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
 						<li class="active">
-							<a href="#intro" data-anchor="scroll" data-offset="60">Introduction</a>
+							<a href="#intro" data-anchor="scroll" data-offset="50">Introduction</a>
 						</li>
 						<li>
-							<a href="#ca" data-anchor="scroll" data-offset="60">Cellular Automata</a>
+							<a href="#ca" data-anchor="scroll" data-offset="50">Cellular Automata</a>
 						</li>
 						<li>
-							<a href="#ll" data-anchor="scroll" data-offset="60">Life-Like CA</a>
+							<a href="#ll" data-anchor="scroll" data-offset="50">Life-Like CA</a>
 						</li>
 						<li>
-							<a href="#maze" data-anchor="scroll" data-offset="60">Maze Generation</a>
+							<a href="#maze" data-anchor="scroll" data-offset="50">Maze Generation</a>
 						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
@@ -49,6 +50,9 @@
 							</ul>
 						</li>
 						<li>
+							<a href="./ca_maze.pdf">Paper</a>
+						</li>
+						<li>
 							<a href="http://github.com/theeluwin/plasmid">GitHub</a>
 						</li>
 					</ul>
@@ -64,7 +68,7 @@
 				<h2>Introduction</h2>
 				<article id="intro-object" class="col-xs-6">
 					<h3>Object</h3>
-					<p><br />Two of Life-Like Cellular Automata generates a maze.<br />But no one knows if the maze is good or not!<br />This project is made for investigation of time complexity of maze generating, and measuring maze complexity of output.<br /><br />Try <a href="./sandbox_ll.html">sandbox</a> above!<br />You can see source codes on <a href="http://github.com/theeluwin/plasmid">github</a> too.<br /><a href="mailto:theeluwin@gmail.com">email</a> us for further information.</p>
+					<p><br />Two of Life-Like Cellular Automata generates a maze.<br />But no one knows if the maze is good or not!<br />This project is made for investigation of time complexity of maze generating, and measuring maze complexity of output.<br /><br />Try <a href="./sandbox_ll.html">sandbox</a> above!<br />You can see source codes on <a href="http://github.com/theeluwin/plasmid">github</a> too.<br /><a href="mailto:theeluwin@gmail.com">email</a> us for further information.<br /><br />Formal details and experiment results are included in this <a href="./ca_maze.pdf">paper</a>.</p>
 				</article>
 				<article id="intro-team" class="col-xs-6">
 					<h3>Who we are?</h2>
@@ -96,12 +100,41 @@
 			</section>
 			<section id="ca" class="clearfix">
 				<h2>Cellular Automata</h2>
+				<article class="col-xs-4">
+					<p>A <a href="http://en.wikipedia.org/wiki/Cellular_automaton">Cellular Automata</a>, or just CA, is defined with <i>cells</i> and <i>steps</i>.<br />Each cell can have either 0 or 1 as cell value.<br />On every step, a cell's value is determined by neighbor cell's value on previous step!</p>
+				</article>
+				<article class="col-xs-4">
+					<div class="ca-canvas" data-ca="1d" data-row="20" data-col="30" data-rule="30" data-init="alone"></div>
+				</article>
+				<article class="col-xs-4">
+					<div class="ca-canvas" data-ca="1d" data-row="20" data-col="30" data-rule="90" data-init="alone"></div>
+				</article>
 			</section>
 			<section id="ll" class="clearfix">
 				<h2>Life-Like CA</h2>
+				<p>Among 2-Dimensional CA, if a cell's value is determined by sum of previous step's neighbor cell values, then it's called <a href="http://en.wikipedia.org/wiki/Life-like_cellular_automata">Like-Like Cellular Automata</a>.<br />This is commonly known as <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Conway's Game of Life</a>.</p>
+				<article class="col-xs-4">
+					<div class="ca-canvas" data-ca="ll" data-row="20" data-col="30" data-rule="23/3" data-init="pulsar"></div>
+				</article>
+				<article class="col-xs-4">
+					<div class="ca-canvas" data-ca="ll" data-row="20" data-col="30" data-rule="23/3" data-init="glider"></div>
+				</article>
+				<article class="col-xs-4">
+					<div class="ca-canvas" data-ca="ll" data-row="20" data-col="30" data-rule="23/3" data-init="random"></div>
+				</article>
 			</section>
 			<section id="maze" class="clearfix">
 				<h2>Maze Generation</h2>
+				<p>In Life-Like CA, rule string 1234/3 and 12345/3 is known for generating a maze. Our goal is to investigate this algorithm's time and maze complexity.</p>
+				<article class="col-xs-4">
+					<p>further explanation</p>
+				</article>
+				<article class="col-xs-4">
+					<div class="ca-canvas" data-ca="ll" data-row="20" data-col="30" data-rule="12345/3" data-init="random">maze</div>
+				</article>
+				<article class="col-xs-4">
+					<div class="ca-canvas" data-ca="ll" data-row="20" data-col="30" data-rule="1234/3" data-init="random">mazectric</div>
+				</article>
 			</section>
 		</div>
 		<nav id="footer" class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
@@ -111,107 +144,5 @@
 				</div>
 			</div>
 		</nav>
-		
-		<!--
-		<header id="header">
-			<h1>Plasmid Cellular Automata based Maze Generator</h1>
-		</header>
-		<div id="container">
-			<section id="intro">
-				<h2>Introduction</h2>
-				<article id="intro-team">
-					<h3>Who we are?</h2>
-					<p>blah blah</p>
-				</article>
-				<article id="intro-project">
-					<h3>What we do?</h2>
-					<p>blah blah</p>
-				</article>
-			</section>
-			<section id="ca">
-				<h2>Cellular Automata</h2>
-				<p>cellular automata</p>
-				<article id="ca-easy">
-					<h3>Elementary CA</h3>
-					<p>elementary ca</p>
-					<div id="ca-easy-setup">
-						<input id="ca-easy-steps" class="form-control" type="number" step="1" value="21" />
-						<input id="ca-easy-cells" class="form-control" type="number" step="1" value="21" />
-						<button id="ca-easy-create" class="btn btn-primary">create</button>
-					</div>
-					<div id="ca-easy-rule" rule="pattern">
-						<ul class="nav nav-tabs">
-							<li class="active">
-								<a href="#ca-easy-pattern" data-toggle="tab">Create Pattern</a>
-							</li>
-							<li>
-								<a href="#ca-easy-number" data-toggle="tab">Rule Number</a>
-							</li>
-						</ul>
-						<div class="tab-content">
-							<div id="ca-easy-pattern" class="tab-pane active" rule="pattern">
-								<table class="table table-hover">
-									<thead>
-										<tr>
-											<th>current</th>
-											<th>000</th>
-											<th>001</th>
-											<th>010</th>
-											<th>011</th>
-											<th>100</th>
-											<th>101</th>
-											<th>110</th>
-											<th>111</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>next</td>
-											<td>
-												<input class="form-control" type="number" step="1" value="0" />
-											</td>
-											<td>
-												<input class="form-control" type="number" step="1" value="0" />
-											</td>
-											<td>
-												<input class="form-control" type="number" step="1" value="0" />
-											</td>
-											<td>
-												<input class="form-control" type="number" step="1" value="1" />
-											</td>
-											<td>
-												<input class="form-control" type="number" step="1" value="1" />
-											</td>
-											<td>
-												<input class="form-control" type="number" step="1" value="1" />
-											</td>
-											<td>
-												<input class="form-control" type="number" step="1" value="1" />
-											</td>
-											<td>
-												<input class="form-control" type="number" step="1" value="0" />
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div id="ca-easy-number" class="tab-pane" rule="number">
-								<input class="form-control" type="number" step="1" value="30" />
-							</div>
-						</div>
-						<button id="ca-easy-apply" class="btn btn-primary">apply</button>
-					</div>
-					<div id="ca-easy-result">
-						<h4>elementary result</h4>
-						<button id="ca-easy-step" class="btn btn-primary">step</button>
-						<div id="ca-easy-map" class="ca-map" step="0"></div>
-					</div>
-				</article>
-			</section>
-		</div>
-		<footer id="footer">
-			<h4>Team Nyamu-Nyamu Koong! Nyan-Nyan</h4>
-		</footer>
-		-->
 	</body>
 </html>

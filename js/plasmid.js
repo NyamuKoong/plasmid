@@ -1,105 +1,110 @@
-$(document).ready(function(){
-	setupLayout();
-	// setupEasy();
-});
-
-function setupLayout()
+function Plasmid(canvas)
 {
+
+	// constructor
+	this.canvas = canvas;
+	
+	// helper
+	this.matrixGenerator = function(row, col)
+	{
+		var ret = [];
+		for(var i = 0; i < row; i++)
+		{
+			var temp = [];
+			for(var j = 0; j < col; j++)
+			{
+				temp.push(0);
+			}
+			ret.push(temp);
+		}
+		return ret;
+	}
+	
+	// initialization
+	this.initialize = function()
+	{
+		this.row = this.canvas.data("row");
+		this.col = this.canvas.data("col");
+		this.rule = this.canvas.data("rule");
+		this.init = this.canvas.data("init");
+		this.refresh();
+	}
+	
+	// refresh (clear all and rebuild)
+	this.refresh = function()
+	{
+		// reset variables
+		this.step = 0;
+		this.cells = this.matrixGenerator(this.row + 2, this.col + 2);
+		
+		// generate initial state
+		this.initial = this.matrixGenerator(this.row + 2, this.col + 2);
+		if(this.init == "alone") this.initial[1][parseInt(this.col / 2) + 1] = 1;
+		else if(this.init == "random")
+		{
+			for(var i = 0; i < this.row + this.col; i++)
+			{
+				var row = parseInt(Math.random() * this.row) + 1;
+				var col = parseInt(Math.random() * this.col) + 1;
+				this.initial[row][col] = 1;
+			}
+		}
+		
+		// rebuild canvas
+		this.canvas.empty();
+		var cellWidth = 100 / this.col;
+		var cellHeight = 100 / this.row;
+		for(var i = 1; i <= this.row; i++)
+		{
+			var row = $("<div>");
+			row.addClass("ca-row");
+			row.css("height", cellHeight + "%");
+			for(var j = 1; j <= this.col; j++)
+			{
+				var col = $("<div>");
+				col.addClass("ca-col");
+				col.css("width", cellWidth + "%");
+				col.attr("state", this.initial[i][j]);
+				row.append(col);
+			}
+			this.canvas.append(row);
+		}
+	}
+	
+	// do a step
+	this.propagate = function()
+	{
+		
+	}
+	
+	// render to canvas
+	this.render = function()
+	{
+		
+	}
 	
 }
 
-/*
-function setupEasy()
+
+function Plasmid1D(canvas)
 {
-	$("#ca-easy-create").click(function(event){
-		var steps = parseInt($("#ca-easy-steps").val());
-		var cells = parseInt($("#ca-easy-cells").val());
-		var map = $("#ca-easy-map");
-		map.empty();
-		for(var i = 0; i < steps; i++)
-		{
-			var step = $("<div>");
-			step.addClass("ca-step");
-			step.attr("step", i);
-			var cellWidth = 100 / cells;
-			for(var j = 0; j < cells; j++)
-			{
-				var cell = $("<div>");
-				cell.addClass("ca-cell");
-				if(i == 0 && j == parseInt(cells / 2))
-				{
-					cell.addClass("ca-cell-on");
-					cell.attr("state", 1);
-				}
-				else
-				{
-					cell.addClass("ca-cell-off");
-					cell.attr("state", 0);
-				}
-				cell.attr("cell", j);
-				cell.css("width", cellWidth + "%");
-				step.append(cell);
-			}
-			map.append(step);
-		}
-	});
-	$("#ca-easy-apply").click(function(event){
-		pattern = [];
-		var rule = $("#ca-easy-rule").attr("rule");
-		var cells = parseInt($("#ca-easy-cells").val());
-		var onCells = $("#ca-easy-map .ca-cell-on");
-		onCells.attr("state", 0);
-		onCells.removeClass("ca-cell-on");
-		onCells.addClass("ca-cell-off");
-		var initCell = $("#ca-easy-map .ca-step[step=0] .ca-cell[cell="+ parseInt(cells / 2) +"]");
-		initCell.addClass("ca-cell-on");
-		initCell.attr("state", 1);
-		if(rule == "pattern")
-		{
-			$("#ca-easy-pattern input").each(function(){
-				pattern.push(parseInt($(this).val()));
-			});
-		}
-		else
-		{
-			var ruleNumber = parseInt($("#ca-easy-number input").val());
-			for(var i = 0; i < 8; i++)
-			{
-				pattern.push(ruleNumber % 2);
-				ruleNumber = parseInt(ruleNumber / 2);
-			}
-			pattern.reverse();
-		}
-		$("#ca-easy-map").attr("step", 0);
-	});
-	$("#ca-easy-step").click(function(event){
-		var currentStep = parseInt($("#ca-easy-map").attr("step"));
-		currentStep += 1;
-		$("#ca-easy-map").attr("step", currentStep);
-		var cells = parseInt($("#ca-easy-cells").val());
-		var step = $("#ca-easy-map .ca-step[step=" + currentStep + "]");
-		var previousStep = $("#ca-easy-map .ca-step[step=" + (currentStep - 1) + "]");
-		for(var i = 1; i < cells - 1; i++)
-		{
-			var cell = step.find(".ca-cell[cell=" + i + "]");
-			var left = parseInt(previousStep.find(".ca-cell[cell=" + (i - 1) + "]").attr("state"));
-			var mid = parseInt(previousStep.find(".ca-cell[cell=" + i + "]").attr("state"));
-			var right = parseInt(previousStep.find(".ca-cell[cell=" + (i + 1) + "]").attr("state"));
-			var currentPattern = 4 * left + 2 * mid + right;
-			if(pattern[currentPattern])
-			{
-				cell.removeClass("ca-cell-off");
-				cell.addClass("ca-cell-on");
-				cell.attr("state", 1);
-			}
-		}
-	});
-	$("#ca-easy-rule .nav-tabs a").click(function(event){
-		event.preventDefault();
-		$(this).tab("show");
-		var target = $(this).attr("href");
-		$("#ca-easy-rule").attr("rule", $(target).attr("rule"));
-	});
-	
+	Plasmid.call(this, canvas);
 }
-*/
+Plasmid1D.prototype = new Plasmid();
+Plasmid1D.prototype.constructor = Plasmid1D;
+
+
+function Plasmid2D(canvas)
+{
+	Plasmid.call(this, canvas);
+}
+Plasmid2D.prototype = new Plasmid();
+Plasmid2D.prototype.constructor = Plasmid2D;
+
+
+function PlasmidLL(canvas)
+{
+	Plasmid2D.call(this, canvas);
+}
+PlasmidLL.prototype = new Plasmid2D();
+PlasmidLL.prototype.constructor = PlasmidLL;
