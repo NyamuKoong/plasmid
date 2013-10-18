@@ -33,14 +33,6 @@ body {
 }
 
 /* Demonstrate the grids */
-.col-xs-4 {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  background-color: #eee;
-  border: 1px solid #ddd;
-  background-color: rgba(86,61,124,.15);
-  border: 1px solid rgba(86,61,124,.2);
-}
 
 .container .navbar-header,
 .container .navbar-collapse {
