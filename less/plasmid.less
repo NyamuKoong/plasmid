@@ -1,0 +1,35 @@
+// cell color
+@on: #333333;
+@off: #EEEEEE;
+
+// canvas
+.ca-canvas
+{
+
+	// row
+	& > div
+	{
+		
+		// cell
+		& > div
+		{
+		
+			height: 100%;
+			display: inline-block;
+			
+			// cell off
+			&[state="0"]
+			{
+				background-color: @off;
+			}
+			
+			// cell on
+			&[state="1"]
+			{
+				background-color: @on;
+			}
+			
+		}
+		
+	}
+}

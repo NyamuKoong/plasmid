@@ -1,0 +1,48 @@
+body {
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+button,
+input,
+select,
+textarea {
+  outline: none !important;
+}
+ul {
+  list-style: none;
+}
+.container {
+  max-width: none !important;
+  width: 1080px;
+}
+.dropdown-menu {
+  top: 51px;
+}
+.center {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.un-float {
+  float: none !important;
+}
+.un-margin {
+  margin: 0 !important;
+}
+.un-padding {
+  padding: 0 !important;
+}
+.inline {
+  display: inline-block !important;
+}
+.ca-canvas {
+  width: 320px;
+  height: 150px;
+}
+#footer {
+  min-height: 30px;
+  height: 30px;
+}
+#footer a {
+  line-height: 30px;
+  font-size: 15px;
+}
