@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="./css/lib/bootstrap.css" />
 		<link rel="stylesheet" href="./css/lib/non-responsive.css" />
+		<link rel="stylesheet" href="./css/plasmid.css" />
 		<link rel="stylesheet" href="./css/style.css" />
 		<script src="./js/lib/modernizr.js"></script>
 		<script src="./js/lib/jquery.js"></script>
@@ -104,23 +105,23 @@
 					<p>A <a href="http://en.wikipedia.org/wiki/Cellular_automaton">Cellular Automata</a>, or just CA, is defined with <i>cells</i> and <i>steps</i>.<br />Each cell can have either 0 or 1 as cell value.<br />On every step, a cell's value is determined by neighbor cell's value on previous step!</p>
 				</article>
 				<article class="col-xs-4">
-					<div class="ca-canvas" data-ca="1d" data-row="20" data-col="30" data-rule="30" data-init="alone"></div>
+					<div class="ca-canvas" data-ca="1d" data-row="30" data-col="64" data-rule="30" data-init="alone" data-period="30"></div>
 				</article>
 				<article class="col-xs-4">
-					<div class="ca-canvas" data-ca="1d" data-row="20" data-col="30" data-rule="90" data-init="alone"></div>
+					<div class="ca-canvas" data-ca="1d" data-row="30" data-col="64" data-rule="90" data-init="alone" data-period="30"></div>
 				</article>
 			</section>
 			<section id="ll" class="clearfix">
 				<h2>Life-Like CA</h2>
 				<p>Among 2-Dimensional CA, if a cell's value is determined by sum of previous step's neighbor cell values, then it's called <a href="http://en.wikipedia.org/wiki/Life-like_cellular_automata">Like-Like Cellular Automata</a>.<br />This is commonly known as <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">Conway's Game of Life</a>.</p>
 				<article class="col-xs-4">
-					<div class="ca-canvas" data-ca="ll" data-row="20" data-col="30" data-rule="23/3" data-init="pulsar"></div>
+					<div class="ca-canvas" data-ca="ll" data-row="15" data-col="32" data-rule="23/3" data-init="pentadecathlon" data-period="0"></div>
 				</article>
 				<article class="col-xs-4">
-					<div class="ca-canvas" data-ca="ll" data-row="20" data-col="30" data-rule="23/3" data-init="glider"></div>
+					<div class="ca-canvas" data-ca="ll" data-row="15" data-col="32" data-rule="23/3" data-init="glider" data-period="48"></div>
 				</article>
 				<article class="col-xs-4">
-					<div class="ca-canvas" data-ca="ll" data-row="20" data-col="30" data-rule="23/3" data-init="random"></div>
+					<div class="ca-canvas" data-ca="ll" data-row="15" data-col="32" data-rule="23/3" data-init="random" data-period="0"></div>
 				</article>
 			</section>
 			<section id="maze" class="clearfix">
@@ -130,10 +131,10 @@
 					<p>further explanation</p>
 				</article>
 				<article class="col-xs-4">
-					<div class="ca-canvas" data-ca="ll" data-row="20" data-col="30" data-rule="12345/3" data-init="random">maze</div>
+					<div class="ca-canvas" data-ca="ll" data-row="15" data-col="32" data-rule="12345/3" data-init="random" data-period="0">maze</div>
 				</article>
 				<article class="col-xs-4">
-					<div class="ca-canvas" data-ca="ll" data-row="20" data-col="30" data-rule="1234/3" data-init="random">mazectric</div>
+					<div class="ca-canvas" data-ca="ll" data-row="15" data-col="32" data-rule="1234/3" data-init="random" data-period="0">mazectric</div>
 				</article>
 			</section>
 		</div>
