@@ -1,4 +1,5 @@
 import os
+os.system('coffee -b --compile --output js/ coffee/')
 lesses = os.listdir('./less')
 for less in lesses:
 	less = less.split('.')[0]
