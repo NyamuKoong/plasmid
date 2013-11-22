@@ -53,7 +53,7 @@ class Plasmid
 		for i in [1..rows.length] by 1
 			cols = $(rows[i-1]).children()
 			for j in [1..cols.length] by 1
-				$(cols[j-1]).attr("state", @cells[i][j])
+				$(cols[j-1]).attr("data-state", @cells[i][j])
 
 
 class Plasmid1D extends Plasmid

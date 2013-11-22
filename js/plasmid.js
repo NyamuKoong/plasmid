@@ -87,7 +87,7 @@ Plasmid = (function() {
         var _j, _ref1, _results1;
         _results1 = [];
         for (j = _j = 1, _ref1 = cols.length; _j <= _ref1; j = _j += 1) {
-          _results1.push($(cols[j - 1]).attr("state", this.cells[i][j]));
+          _results1.push($(cols[j - 1]).attr("data-state", this.cells[i][j]));
         }
         return _results1;
       }).call(this));
