@@ -160,7 +160,6 @@ class PlasmidLL extends Plasmid
 				sum += @cells[i-1][j-1]+@cells[i-1][j]+@cells[i-1][j+1]
 				sum += @cells[i][j-1]+@cells[i][j+1]
 				sum += @cells[i+1][j-1]+@cells[i+1][j]+@cells[i+1][j+1]
-				if i is 3 and j is 3 then @print sum
 				if not @cells[i][j] and @rule.birth[sum] then cells[i][j] = 1
 				if @cells[i][j] and not @rule.survive[sum] then cells[i][j] = 0
 		@cells = @clone(cells)
