@@ -1,12 +1,22 @@
 $(document).ready ->
 	`_ca = new PlasmidLL($("#sandbox"))`
+	`_dragging = false`
+	toggle = (cell) ->
+		col = cell.index() + 1
+		row = cell.parent().index() + 1
+		val = _ca.cells[row][col]
+		_ca.cells[row][col] = +!val
+		_ca.render()
 	bind = ->
-		$("#sandbox").children().children().click ->
-			col = $(this).index() + 1
-			row = $(this).parent().index() + 1
-			val = _ca.cells[row][col]
-			_ca.cells[row][col] = +!val
-			_ca.render()
+		cells = $("#sandbox").children().children()
+		cells.mousedown ->
+			`_dragging = true`
+			toggle($(this))
+		cells.mouseup ->
+			`_dragging = false`
+		cells.mouseover ->
+			if _dragging
+				toggle($(this))
 	bind()
 	propagate = ->
 		`_ca.propagate()`
