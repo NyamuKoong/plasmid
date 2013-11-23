@@ -87,7 +87,7 @@ Plasmid = (function() {
         var _j, _ref1, _results1;
         _results1 = [];
         for (j = _j = 1, _ref1 = cols.length; _j <= _ref1; j = _j += 1) {
-          _results1.push($(cols[j - 1]).attr("state", this.cells[i][j]));
+          _results1.push($(cols[j - 1]).attr("data-state", this.cells[i][j]));
         }
         return _results1;
       }).call(this));
@@ -119,7 +119,7 @@ Plasmid1D = (function(_super) {
     Plasmid1D.__super__.refresh.call(this);
     if (this.init === "alone") {
       this.cells[1][this.int(this.col / 2) + 1] = 1;
-    } else {
+    } else if (this.init === "random") {
       total = this.int(this.col / 4);
       for (i = _i = 0; _i < total; i = _i += 1) {
         this.cells[1][this.int(this.rand() * this.col) + 1] = 1;
@@ -160,7 +160,7 @@ Plasmid2D = (function(_super) {
     Plasmid2D.__super__.refresh.call(this);
     if (this.init === "alone") {
       this.cells[this.int(this.row / 2) + 1][this.int(this.col / 2) + 1] = 1;
-    } else {
+    } else if (this.init === "random") {
       total = this.int(this.row * this.col / 4);
       for (i = _i = 0; _i < total; i = _i += 1) {
         row = this.int(this.rand() * this.row) + 1;
@@ -237,7 +237,7 @@ PlasmidLL = (function(_super) {
       this.cells[4][2] = 1;
       this.cells[4][3] = 1;
       this.cells[4][4] = 1;
-    } else {
+    } else if (this.init === "random") {
       total = this.int(this.row * this.col / 4);
       for (i = _i = 0; _i < total; i = _i += 1) {
         row = this.int(this.rand() * this.row) + 1;
@@ -261,9 +261,6 @@ PlasmidLL = (function(_super) {
         sum += this.cells[i - 1][j - 1] + this.cells[i - 1][j] + this.cells[i - 1][j + 1];
         sum += this.cells[i][j - 1] + this.cells[i][j + 1];
         sum += this.cells[i + 1][j - 1] + this.cells[i + 1][j] + this.cells[i + 1][j + 1];
-        if (i === 3 && j === 3) {
-          this.print(sum);
-        }
         if (!this.cells[i][j] && this.rule.birth[sum]) {
           cells[i][j] = 1;
         }

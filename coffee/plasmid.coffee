@@ -53,7 +53,7 @@ class Plasmid
 		for i in [1..rows.length] by 1
 			cols = $(rows[i-1]).children()
 			for j in [1..cols.length] by 1
-				$(cols[j-1]).attr("state", @cells[i][j])
+				$(cols[j-1]).attr("data-state", @cells[i][j])
 
 
 class Plasmid1D extends Plasmid
@@ -69,7 +69,7 @@ class Plasmid1D extends Plasmid
 	refresh: ->
 		super()
 		if @init is "alone" then @cells[1][@int(@col/2)+1] = 1
-		else
+		else if @init is "random"
 			total = @int(@col/4)
 			for i in [0...total] by 1
 				@cells[1][@int(@rand()*@col)+1] = 1
@@ -91,7 +91,7 @@ class Plasmid2D extends Plasmid
 	refresh: ->
 		super()
 		if @init is "alone" then @cells[@int(@row/2)+1][@int(@col/2)+1] = 1
-		else
+		else if @init is "random"
 			total = @int(@row*@col/4)
 			for i in [0...total] by 1
 				row = @int(@rand()*@row)+1
@@ -142,7 +142,7 @@ class PlasmidLL extends Plasmid
 			@cells[4][2] = 1
 			@cells[4][3] = 1
 			@cells[4][4] = 1
-		else
+		else if @init is "random"
 			total = @int(@row*@col/4)
 			for i in [0...total] by 1
 				row = @int(@rand()*@row)+1
@@ -160,7 +160,6 @@ class PlasmidLL extends Plasmid
 				sum += @cells[i-1][j-1]+@cells[i-1][j]+@cells[i-1][j+1]
 				sum += @cells[i][j-1]+@cells[i][j+1]
 				sum += @cells[i+1][j-1]+@cells[i+1][j]+@cells[i+1][j+1]
-				if i is 3 and j is 3 then @print sum
 				if not @cells[i][j] and @rule.birth[sum] then cells[i][j] = 1
 				if @cells[i][j] and not @rule.survive[sum] then cells[i][j] = 0
 		@cells = @clone(cells)
