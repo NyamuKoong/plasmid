@@ -18,19 +18,18 @@ $(document).ready ->
 			if _dragging
 				toggle($(this))
 	bind()
-	propagate = ->
+	play = ->
 		`_ca.propagate()`
-		`_timer = setTimeout(propagate, 100)`
+		`_timer = setTimeout(play, 100)`
+	pause = ->
+		clearTimeout(_timer)
 	$("#sandbox-toggle").click ->
 		now = $(this).data("toggle")
 		to = if now is "play" then "pause" else "play"
 		icon = $($(this).children()[0])
 		icon.removeClass("glyphicon-" + now).addClass("glyphicon-" + to)
 		$(this).data("toggle", to)
-		if now is "play"
-			propagate()
-		else
-			clearTimeout(_timer)
+		if now is "play" then play() else pause()
 	$("#sandbox-step").click ->
 		_ca.propagate()
 	$("#sandbox-refresh").click ->
@@ -43,3 +42,10 @@ $(document).ready ->
 			col = _ca.int(_ca.rand()*_ca.col)+1
 			_ca.cells[row][col] = 1
 		_ca.render()
+	$(".sandbox-rule").click ->
+		rule = $(this).text()
+		sandbox = $("#sandbox")
+		sandbox.data("rule", rule)
+		sandbox.attr("data-rule", rule)
+		`_ca = new PlasmidLL($("#sandbox"))`
+		bind()

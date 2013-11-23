@@ -2,7 +2,7 @@
 $(document).ready(function() {
   _ca = new PlasmidLL($("#sandbox"));
   _dragging = false;
-  var bind, propagate, toggle;
+  var bind, pause, play, toggle;
   toggle = function(cell) {
     var col, row, val;
     col = cell.index() + 1;
@@ -28,9 +28,12 @@ $(document).ready(function() {
     });
   };
   bind();
-  propagate = function() {
+  play = function() {
     _ca.propagate();
-    return _timer = setTimeout(propagate, 100);
+    return _timer = setTimeout(play, 100);
+  };
+  pause = function() {
+    return clearTimeout(_timer);
   };
   $("#sandbox-toggle").click(function() {
     var icon, now, to;
@@ -40,9 +43,9 @@ $(document).ready(function() {
     icon.removeClass("glyphicon-" + now).addClass("glyphicon-" + to);
     $(this).data("toggle", to);
     if (now === "play") {
-      return propagate();
+      return play();
     } else {
-      return clearTimeout(_timer);
+      return pause();
     }
   });
   $("#sandbox-step").click(function() {
@@ -52,7 +55,7 @@ $(document).ready(function() {
     _ca.refresh();
     return bind();
   });
-  return $("#sandbox-random").click(function() {
+  $("#sandbox-random").click(function() {
     var col, i, row, total, _i;
     total = _ca.int(_ca.row * _ca.col / 4);
     for (i = _i = 0; _i < total; i = _i += 1) {
@@ -61,5 +64,14 @@ $(document).ready(function() {
       _ca.cells[row][col] = 1;
     }
     return _ca.render();
+  });
+  return $(".sandbox-rule").click(function() {
+    var rule, sandbox;
+    rule = $(this).text();
+    sandbox = $("#sandbox");
+    sandbox.data("rule", rule);
+    sandbox.attr("data-rule", rule);
+    _ca = new PlasmidLL($("#sandbox"));
+    return bind();
   });
 });
