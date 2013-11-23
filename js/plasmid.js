@@ -276,20 +276,3 @@ PlasmidLL = (function(_super) {
   return PlasmidLL;
 
 })(Plasmid);
-
-$(document).ready(function() {
-  _ca = [];
-  return $("div[data-ca]").each(function() {
-    var ca, canvas, type;
-    canvas = $(this);
-    type = canvas.data("ca");
-    if (type === "1d") {
-      ca = new Plasmid1D(canvas);
-    } else if (type === "2d") {
-      ca = new Plasmid2D(canvas);
-    } else {
-      ca = new PlasmidLL(canvas);
-    }
-    return _ca.push(ca);
-  });
-});
