@@ -69,7 +69,7 @@ class Plasmid1D extends Plasmid
 	refresh: ->
 		super()
 		if @init is "alone" then @cells[1][@int(@col/2)+1] = 1
-		else
+		else if @init is "random"
 			total = @int(@col/4)
 			for i in [0...total] by 1
 				@cells[1][@int(@rand()*@col)+1] = 1
@@ -91,7 +91,7 @@ class Plasmid2D extends Plasmid
 	refresh: ->
 		super()
 		if @init is "alone" then @cells[@int(@row/2)+1][@int(@col/2)+1] = 1
-		else
+		else if @init is "random"
 			total = @int(@row*@col/4)
 			for i in [0...total] by 1
 				row = @int(@rand()*@row)+1
@@ -142,7 +142,7 @@ class PlasmidLL extends Plasmid
 			@cells[4][2] = 1
 			@cells[4][3] = 1
 			@cells[4][4] = 1
-		else
+		else if @init is "random"
 			total = @int(@row*@col/4)
 			for i in [0...total] by 1
 				row = @int(@rand()*@row)+1

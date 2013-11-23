@@ -119,7 +119,7 @@ Plasmid1D = (function(_super) {
     Plasmid1D.__super__.refresh.call(this);
     if (this.init === "alone") {
       this.cells[1][this.int(this.col / 2) + 1] = 1;
-    } else {
+    } else if (this.init === "random") {
       total = this.int(this.col / 4);
       for (i = _i = 0; _i < total; i = _i += 1) {
         this.cells[1][this.int(this.rand() * this.col) + 1] = 1;
@@ -160,7 +160,7 @@ Plasmid2D = (function(_super) {
     Plasmid2D.__super__.refresh.call(this);
     if (this.init === "alone") {
       this.cells[this.int(this.row / 2) + 1][this.int(this.col / 2) + 1] = 1;
-    } else {
+    } else if (this.init === "random") {
       total = this.int(this.row * this.col / 4);
       for (i = _i = 0; _i < total; i = _i += 1) {
         row = this.int(this.rand() * this.row) + 1;
@@ -237,7 +237,7 @@ PlasmidLL = (function(_super) {
       this.cells[4][2] = 1;
       this.cells[4][3] = 1;
       this.cells[4][4] = 1;
-    } else {
+    } else if (this.init === "random") {
       total = this.int(this.row * this.col / 4);
       for (i = _i = 0; _i < total; i = _i += 1) {
         row = this.int(this.rand() * this.row) + 1;
