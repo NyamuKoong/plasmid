@@ -1,0 +1,5 @@
+/css/*.css
+!/css/fonts/*
+!/css/lib/*.css
+/js/*.js
+!/js/lib/*.js
