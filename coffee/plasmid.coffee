@@ -56,6 +56,42 @@ class Plasmid
 				$(cols[j-1]).attr("data-state", @cells[i][j])
 
 
+class CanvasPlasmid extends Plasmid
+	constructor: (@canvasWrapper) ->
+		@color = ['#cccccc', '#4d4d4d']
+		super(@canvasWrapper)
+
+	refresh: ->
+		@step = 0
+		@cells = @matrix(@row+2, @col+2)
+		
+		@canvasWrapper.empty()
+		widthMultiplier = @canvasWrapper.width() / @col
+		heightMultiplier = @canvasWrapper.height() / @row
+		@multiplier = parseInt(Math.min(widthMultiplier, heightMultiplier), 10)
+		
+		@$canvas = $('<canvas />').attr(
+			width: @col * @multiplier
+			height: @row * @multiplier
+		).appendTo(@canvasWrapper)
+
+		@ctx = @$canvas.get(0).getContext('2d')
+		@ctx.fillRect(0, 0, @row, @col)
+		@ctx.scale(@multiplier, @multiplier)
+
+	render: ->
+		for i in [1..@col]
+			for j in [1..@row]
+				@ctx.fillStyle = @color[@cells[i][j]]
+				@ctx.fillRect(i - 1, j - 1, 1, 1)
+
+	toggleCell: (x, y) ->
+		x = 0 | (x / @multiplier) + 1
+		y = 0 | (y / @multiplier) + 1
+		@cells[x][y] = 1 - @cells[x][y]
+		@render()
+
+
 class Plasmid1D extends Plasmid
 
 	constructor: (@canvas) ->
@@ -164,3 +200,56 @@ class PlasmidLL extends Plasmid
 				if @cells[i][j] and not @rule.survive[sum] then cells[i][j] = 0
 		@cells = @clone(cells)
 		@render()
+
+
+class CanvasWorkerPlasmidLL extends CanvasPlasmid
+
+	constructor: (@canvas) ->
+		super(@canvas)
+		rule =
+			survive: []
+			birth: []
+		@rule = @rule.split("/")
+		survive = @rule[0]
+		rule.survive.push(0) for i in [0..8]
+		rule.survive[@int(i)] = 1 for i in survive
+		birth = @rule[1]
+		rule.birth.push(0) for i in [0..8]
+		rule.birth[@int(i)] = 1 for i in birth
+		@rule = rule
+		@refreshFlag = false
+
+		@worker = new Worker('js/plasmid_worker_ll.js')
+
+	refresh: ->
+		super()
+		@refreshFlag = true
+		@render()
+
+	propagate: (callback = false)->
+		_this = this
+		super()
+
+		messageHandler = (event) ->
+			if @refreshFlag
+				@refreshFlag = false
+				return
+
+			_this.cells = _this.clone(event.data)
+			_this.render()
+
+			if callback isnt false
+				callback()
+
+
+		if not @eventListening or (@callback isnt false and callback is false) or (@callback is false and callback isnt false)
+			@eventListening = true
+			@worker.onmessage = messageHandler
+
+		@callback = callback
+		@worker.postMessage(
+			cells : @cells
+			row : @row
+			col : @col
+			rule : @rule
+		)
