@@ -1,65 +1,76 @@
-$(document).ready ->
-	_ca = new CanvasWorkerPlasmidLL($("#sandbox"))
-	_dragging = false
-	_timer = false
-	_playing = false
+# Locals
+$sandbox = null
+plasmid = null
+playTimer = false
 
-	toggle = (e) ->
-		_ca.toggleCellIfNew(e.offsetX, e.offsetY)
+# Flags
+draggingFlag = false
 
-	bind = ->
-		$canvas = $("#sandbox > canvas")
-		$canvas.mousedown( ->
-			_dragging = true
-			toggle(event)
-		).mouseup( ->
-			_dragging = false
-		).mousemove( (event) ->
-			if _dragging
-				toggle(event)
-		)
+# Sandbox related methods.
+bindPlasmid = ->
+	toggle = (e, reset = false) ->
+		plasmid.toggleCellIfNew(e.offsetX, e.offsetY, reset)
 
-	bind()
-	
-	play = ->
-		_playing = true
-		reset = ->
-			_timer = setTimeout(play, 60)
+	$canvas = $sandbox.children('canvas')
 
-		_ca.propagate(reset)
+	$canvas.mousedown( ->
+		draggingFlag = true
+		toggle(event, true)
+	).mouseup( ->
+		draggingFlag = false
+	).mousemove( (event) ->
+		if draggingFlag then toggle(event)
+	)
 
-	pause = ->
-		if _playing
-			_playing = false
-			clearTimeout(_timer)
+resetSandbox = ->
+	plasmid = new CanvasWorkerPlasmidLL($sandbox)
+	bindPlasmid()
 
-	$("#sandbox-toggle").click ->
-		now = $(this).data("toggle")
-		to = if now is "play" then "pause" else "play"
-		icon = $($(this).children()[0])
-		icon.removeClass("glyphicon-" + now).addClass("glyphicon-" + to)
-		$(this).data("toggle", to)
-		if now is "play" then play() else pause()
+# Top menu related methods.
+play = ->
+	plasmid.propagate ->
+		playTimer = setTimeout(play, 60)
 
-	$("#sandbox-step").click ->
-		if not _playing
-			_ca.propagate()
+pause = ->
+	if playTimer isnt false
+		clearTimeout(playTimer)
+		playTimer = false
 
-	$("#sandbox-refresh").click ->
-		_ca.refresh()
-		bind()
+toggleIcon = ($button, iconStr1, iconStr2) ->
+	now = $button.data('toggle')
+	to = if now is iconStr1 then iconStr2 else iconStr1
+	$button.children().eq(0).removeClass("glyphicon-" + now).addClass("glyphicon-" + to)
+	$button.data('toggle', to)
+	return now
 
-	$("#sandbox-random").click ->
-		total = _ca.int(_ca.row*_ca.col/4)
-		for i in [0...total] by 1
-			row = _ca.int(_ca.rand()*_ca.row)+1
-			col = _ca.int(_ca.rand()*_ca.col)+1
-			_ca.cells[row][col] = 1
-		_ca.render()
+bindButtons = ->
+	$('#sandbox-toggle').click ->
+		if toggleIcon($(this), 'play', 'pause') is 'play'
+			play() 
+		else
+			pause()
 
-	$(".sandbox-rule").click ->
-		rule = $(this).text()
-		sandbox = $("#sandbox")
-		sandbox.data("rule", rule)
-		_ca = new CanvasWorkerPlasmidLL($("#sandbox"))
-		bind()
+	$('#sandbox-step').click ->
+		plasmid.propagate()
+
+	$('#sandbox-refresh').click ->
+		plasmid.refresh()
+
+	$('#sandbox-random').click ->
+		total = plasmid.int(plasmid.row * plasmid.col / 4)
+
+		for i in [0...total]
+			row = plasmid.int(plasmid.rand() * plasmid.row) + 1
+			col = plasmid.int(plasmid.rand() * plasmid.col) + 1
+			plasmid.cells[row][col] = 1
+		
+		plasmid.render()
+
+	$('.sandbox-rule').click ->
+		$sandbox.data("rule", $(this).text())
+		resetSandbox()
+
+$ ->
+	$sandbox = $('#sandbox')
+	resetSandbox()
+	bindButtons()

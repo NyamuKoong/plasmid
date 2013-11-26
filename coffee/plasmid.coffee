@@ -70,7 +70,7 @@ class CanvasPlasmid extends Plasmid
 		@canvasWrapper.empty()
 		widthMultiplier = @canvasWrapper.width() / @col
 		heightMultiplier = @canvasWrapper.height() / @row
-		@multiplier = parseInt(Math.min(widthMultiplier, heightMultiplier), 10)
+		@multiplier = @int(Math.min(widthMultiplier, heightMultiplier))
 		
 		@$canvas = $('<canvas />').attr(
 			width: @col * @multiplier
@@ -95,10 +95,10 @@ class CanvasPlasmid extends Plasmid
 		@cells[x][y] = 1 - @cells[x][y]
 		@drawCell(x, y)
 
-	toggleCellIfNew: (x, y) ->
+	toggleCellIfNew: (x, y, reset = false) ->
 		x = 0 | (x / @multiplier) + 1
 		y = 0 | (y / @multiplier) + 1
-		if @toggleSaved.x isnt x or @toggleSaved.y isnt y
+		if @toggleSaved.x isnt x or @toggleSaved.y isnt y or reset
 			@toggleCell(x, y)
 			@toggleSaved.x = x
 			@toggleSaved.y = y
@@ -252,7 +252,6 @@ class CanvasWorkerPlasmidLL extends CanvasPlasmid
 
 			if callback isnt false
 				callback()
-
 
 		if not @eventListening or (@callback isnt false and callback is false) or (@callback is false and callback isnt false)
 			@eventListening = true
