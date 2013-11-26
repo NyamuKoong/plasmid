@@ -5,7 +5,7 @@ $(document).ready ->
 	_playing = false
 
 	toggle = (e) ->
-		_ca.toggleCell(e.offsetX, e.offsetY)
+		_ca.toggleCellIfNew(e.offsetX, e.offsetY)
 
 	bind = ->
 		$canvas = $("#sandbox > canvas")

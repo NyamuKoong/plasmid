@@ -61,6 +61,8 @@ class CanvasPlasmid extends Plasmid
 		@color = ['#cccccc', '#4d4d4d']
 		super(@canvasWrapper)
 
+		@toggleSaved = {x : -1, y : -1}
+
 	refresh: ->
 		@step = 0
 		@cells = @matrix(@row+2, @col+2)
@@ -85,11 +87,21 @@ class CanvasPlasmid extends Plasmid
 				@ctx.fillStyle = @color[@cells[i][j]]
 				@ctx.fillRect(i - 1, j - 1, 1, 1)
 
+	drawCell: (x, y)->
+		@ctx.fillStyle = @color[@cells[x][y]]
+		@ctx.fillRect(x - 1, y - 1, 1, 1)
+
 	toggleCell: (x, y) ->
+		@cells[x][y] = 1 - @cells[x][y]
+		@drawCell(x, y)
+
+	toggleCellIfNew: (x, y) ->
 		x = 0 | (x / @multiplier) + 1
 		y = 0 | (y / @multiplier) + 1
-		@cells[x][y] = 1 - @cells[x][y]
-		@render()
+		if @toggleSaved.x isnt x or @toggleSaved.y isnt y
+			@toggleCell(x, y)
+			@toggleSaved.x = x
+			@toggleSaved.y = y
 
 
 class Plasmid1D extends Plasmid
