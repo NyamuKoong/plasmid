@@ -75,10 +75,6 @@
 			
 			plasmid.render()
 
-		$('.sandbox-rule').click ->
-			$sandbox.data("rule", $(this).text())
-			resetSandbox()
-
 	# Sidemenu related methods.
 
 	stopBeforeModification = ->
@@ -136,6 +132,10 @@
 
 		$('#query-btn').click ->
 			updateInfo()
+
+		$('#sandbox-rule-btn').click ->
+			$sandbox.data('rule', $('#sandbox-rule').val())
+			resetSandbox()
 
 	$ ->
 		$sandbox = $('#sandbox')

@@ -42,17 +42,6 @@
 								<span class="glyphicon glyphicon-random"></span>
 							</a>
 						</li>
-						<li class="dropdown">
-							<a class="dropdown-toggle" href="#" data-toggle="dropdown">Rule String <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li>
-									<a class="sandbox-rule" href="#">12345/3</a>
-								</li>
-								<li>
-									<a class="sandbox-rule" href="#">1234/3</a>
-								</li>
-							</ul>
-						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
@@ -110,6 +99,12 @@
 								<input id="sandbox-size-scale" type="checkbox" /> <label for="sandbox-size-scale">Scale current image</label>
 							</div>
 							<button type="button" id="sandbox-size-btn" class="btn btn-primary">Apply</button>
+						</div>
+						<hr />
+						<div class="form-group">
+							<label for="sandbox-rule">Rule String</label>
+							<input type="text" id="sandbox-rule" class="form-control" value="12345/3" /><br />
+							<button type="button" id="sandbox-rule-btn" class="btn btn-primary">Apply</button>
 						</div>
 						<hr />
 					</form>
