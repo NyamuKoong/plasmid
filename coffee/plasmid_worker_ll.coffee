@@ -20,5 +20,8 @@ self.addEventListener('message', (event) ->
 			if not a.cells[i][j] and a.rule.birth[sum] then cells[i][j] = 1
 			if a.cells[i][j] and not a.rule.survive[sum] then cells[i][j] = 0
 
-	self.postMessage(cells)
+	self.postMessage(
+		cells : cells
+		startTime : a.startTime
+	)
 )

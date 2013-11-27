@@ -75,6 +75,23 @@
 				</div>
 				<div id="col-control" class="col-xs-12 col-md-3">
 					<form role="form">
+						<h3>Query</h3>
+						<div class="form-group">
+							<div class="checkbox">
+								<input id="update-simultaneously" type="checkbox" /> <label for="update-simultaneously">Update simultaneously</label>
+							</div>
+							<button type="button" id="query-btn" class="btn btn-success">Query Now</button>
+						</div>
+						<hr />
+						<ul id="results">
+							<li>Groups: <span id="query-groups">N/A</span></li>
+							<li>Solvable: <span id="query-solvable">N/A</span></li>
+							<li>Propagation Time: <span id="query-propagation-time">0</span>ms</li>
+							<li>Query Time: <span id="query-update-time">0</span>ms</li>
+						</ul>
+						<hr />
+					</form>
+					<form role="form">
 						<h3>Control</h3>
 						<div class="form-group">
 							<label for="iteration-speed">Iteration Speed</label>

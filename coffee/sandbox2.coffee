@@ -31,7 +31,8 @@ resetSandbox = ->
 # Top menu related methods.
 play = ->
 	plasmid.propagate ->
-		playTimer = setTimeout(play, iterationSpeed)
+		updateInfoSimulatneously()
+		playTimer = setTimeout(play, iterationSpeed - plasmid.propagationTime)
 
 pause = ->
 	if playTimer isnt false
@@ -44,7 +45,6 @@ toggleIcon = ($button, iconStr1, iconStr2) ->
 	to = if now is iconStr1 then iconStr2 else iconStr1
 	$button.children().eq(0).removeClass("glyphicon-" + now).addClass("glyphicon-" + to)
 	$button.data('toggle', to)
-	console.log now, to
 	return now
 
 togglePlaying = ->
@@ -59,6 +59,7 @@ bindButtons = ->
 
 	$('#sandbox-step').click ->
 		plasmid.propagate()
+		updateInfoSimulatneously()
 
 	$('#sandbox-refresh').click ->
 		resetSandbox()
@@ -82,6 +83,15 @@ bindButtons = ->
 stopBeforeModification = ->
 	if playTimer isnt false
 		togglePlaying()
+
+updateInfo = ->
+	startTime = plasmid.time()
+	$('#query-propagation-time').text(plasmid.propagationTime)
+	$('#query-update-time').text(plasmid.time() - startTime)
+
+updateInfoSimulatneously = ->
+	if $('#update-simultaneously:checked').length > 0
+		updateInfo()
 
 bindSidemenu = ->
 	$('#iteration-speed').change ->
@@ -109,7 +119,6 @@ bindSidemenu = ->
 				for j in  [1..newSize]
 					data[i][j] = old[scaleFunction(i)][scaleFunction(j)]
 
-
 		$sandbox.data('col', newSize).data('row', newSize)
 		resetSandbox()
 
@@ -123,6 +132,9 @@ bindSidemenu = ->
 			for j in  [1..size]
 				data[i][j] = 1 - data[i][j]
 		plasmid.dump(data)
+
+	$('#query-btn').click ->
+		updateInfo()
 
 $ ->
 	$sandbox = $('#sandbox')

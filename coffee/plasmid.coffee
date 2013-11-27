@@ -23,11 +23,11 @@ class Plasmid
 			ret.push(temp)
 		return ret
 	
-	int: (arg) ->
-		return parseInt(arg)
+	int: (arg) -> parseInt(arg, 10)
+
+	time: -> new Date().valueOf()
 	
-	rand: ->
-		return Math.random()
+	rand: -> Math.random()
 	
 	print: (arg) ->
 		console.log(arg)
@@ -246,6 +246,7 @@ class CanvasWorkerPlasmidLL extends CanvasPlasmid
 		rule.birth.push(0) for i in [0..8]
 		rule.birth[@int(i)] = 1 for i in birth
 		@rule = rule
+		@propagationTime = 0
 
 	refresh: ->
 		super()
@@ -266,9 +267,11 @@ class CanvasWorkerPlasmidLL extends CanvasPlasmid
 				@refreshFlag = false
 				return
 
-			_this.cells = _this.clone(event.data)
+			_this.cells = _this.clone(event.data.cells)
 			if callback isnt false
 				callback()
+
+			_this.propagationTime = _this.time() - event.data.startTime
 
 			_this.render()
 
@@ -278,6 +281,7 @@ class CanvasWorkerPlasmidLL extends CanvasPlasmid
 
 		@callback = callback
 		@worker.postMessage(
+			startTime : @time()
 			cells : @cells
 			row : @row
 			col : @col
