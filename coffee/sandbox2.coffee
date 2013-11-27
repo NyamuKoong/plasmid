@@ -1,7 +1,9 @@
 # Locals
 $sandbox = null
 plasmid = null
+
 playTimer = false
+iterationSpeed = 60
 
 # Flags
 draggingFlag = false
@@ -29,7 +31,7 @@ resetSandbox = ->
 # Top menu related methods.
 play = ->
 	plasmid.propagate ->
-		playTimer = setTimeout(play, 60)
+		playTimer = setTimeout(play, iterationSpeed)
 
 pause = ->
 	if playTimer isnt false
@@ -54,8 +56,8 @@ bindButtons = ->
 		plasmid.propagate()
 
 	$('#sandbox-refresh').click ->
-		plasmid.refresh()
-
+		resetSandbox()
+	
 	$('#sandbox-random').click ->
 		total = plasmid.int(plasmid.row * plasmid.col / 4)
 
@@ -70,7 +72,41 @@ bindButtons = ->
 		$sandbox.data("rule", $(this).text())
 		resetSandbox()
 
+# Sidemenu related methods.
+
+bindSidemenu = ->
+	$('#iteration-speed').change ->
+		iterationSpeed = plasmid.int($(this).val())
+		if isNaN(iterationSpeed) then iterationSpeed = 60
+		if iterationSpeed <= 0 then iterationSpeed = 1
+		$(this).val(iterationSpeed)
+
+	$('#sandbox-size-btn').click ->
+		size = plasmid.int($sandbox.data('col'))
+		newSize = plasmid.int($('#sandbox-size').val())
+		# Check scale option.
+		scale = $('#sandbox-size-scale:checked').length
+		data = null
+		if scale
+			old = plasmid.dump()
+			data = plasmid.matrix(newSize + 2, newSize + 2)
+			# Scale the data.
+			d = size / newSize
+			c = 0.5 * (1 - d)
+			scaleFunction = (x) -> Math.round(d * x + c)
+
+			for i in [1..newSize]
+				for j in  [1..newSize]
+					data[i][j] = old[scaleFunction(i)][scaleFunction(j)]
+
+
+		$sandbox.data('col', newSize).data('row', newSize)
+		resetSandbox()
+
+		if scale then plasmid.dump(data)
+
 $ ->
 	$sandbox = $('#sandbox')
 	resetSandbox()
 	bindButtons()
+	bindSidemenu()
