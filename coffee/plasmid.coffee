@@ -55,17 +55,17 @@ class Plasmid
 			for j in [1..cols.length] by 1
 				$(cols[j-1]).attr("data-state", @cells[i][j])
 
-	dump: (input = false) ->
+	dump: (input = false, clone = true) ->
 		if input instanceof Array and input[0] instanceof Array
 			if input.length is @cells.length and input[0].length is @cells[0].length
 				# Override cells data into input.
-				@cells = @clone(input)
+				@cells = if clone then @clone(input) else input
 				@render()
 			else
 				throw 'ReferenceError @ plasmid.dump'
 		else if input is false
 			# return cells.
-			return @clone(@cells)
+			return if clone then @clone(@cells) else @cells
 		else
 			throw 'TypeError @ plasmid.dump'
 
@@ -270,7 +270,7 @@ class CanvasWorkerPlasmidLL extends CanvasPlasmid
 				@refreshFlag = false
 				return
 
-			_this.cells = _this.clone(event.data.cells)
+			_this.cells = event.data.cells
 			if callback isnt false
 				callback()
 

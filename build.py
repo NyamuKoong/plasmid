@@ -4,7 +4,8 @@ import sys
 import time
 
 options = {
-	'l' : False # Auto loop
+	'l' : False, # Auto loop
+	'u' : False, # Uglify
 }
 
 if len(sys.argv) > 1:
@@ -14,6 +15,14 @@ if len(sys.argv) > 1:
 
 def build():
 	os.system('coffee -b --compile --output js/ coffee/')
+
+	if options['u']:
+		os.chdir('./js')
+		jses = [f for f in os.listdir('.') if os.path.isfile(f)]
+		for js in jses:
+			os.system('uglifyjs %s -m -c --screw-ie8 --source-map %s.map -o %s' % (js, js, js))
+		os.chdir('./..')
+
 	lesses = os.listdir('./less')
 	for less in lesses:
 		less = less.split('.')[0]
@@ -21,10 +30,7 @@ def build():
 
 	print ('[' + time.strftime('%H:%M:%S') + '] Build')
 
-if options['l']:
-	while True:
-		build()
-		time.sleep(3)
-
-else:
+build()
+while options['l']:
+	time.sleep(3)
 	build()
