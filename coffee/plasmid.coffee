@@ -96,10 +96,13 @@ class CanvasPlasmid extends Plasmid
 		@ctx.scale(@multiplier, @multiplier)
 
 	render: ->
+		@ctx.fillStyle = @color[0]
+		@ctx.fillRect(0, 0, @col, @row)
+		@ctx.fillStyle = @color[1]
 		for i in [1..@col]
 			for j in [1..@row]
-				@ctx.fillStyle = @color[@cells[i][j]]
-				@ctx.fillRect(i - 1, j - 1, 1, 1)
+				if @cells[i][j] is 1
+					@ctx.fillRect(i - 1, j - 1, 1, 1)
 
 	drawCell: (x, y)->
 		@ctx.fillStyle = @color[@cells[x][y]]
