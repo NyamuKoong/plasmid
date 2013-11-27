@@ -1,0 +1,55 @@
+@charset "utf-8";
+
+
+body
+{
+	padding-top: 71px !important;
+	padding-bottom: 0 !important;
+	background: #333333;
+	-webkit-font-smoothing: antialiased;
+	font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.row > div {
+	background: #e5e5e5;
+	border: 1px solid #ccc;
+}
+
+#col-sandbox
+{
+	padding-top: 10px;
+	padding-bottom: 70%;
+
+	#sandbox
+	{
+		position: absolute;
+		top: 10px;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		height: auto !important;
+		width: auto !important;
+		text-align: center;
+
+		canvas
+		{
+			display: inline-block;
+			cursor: crosshair;
+		}
+	}
+}
+
+
+#col-control
+{
+	background: #e5e5e5;
+
+	label {
+		font-weight: normal;
+	}
+
+	#results {
+		padding-left: 10px;
+		font-size: 12px;
+	}
+}

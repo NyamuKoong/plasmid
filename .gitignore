@@ -1,0 +1,7 @@
+/css/*.css
+!/css/fonts/*
+!/css/lib/*.css
+/js/*.js
+/js/*.map
+!/js/lib/*.js
+.DS_Store

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Plasmid Maze Generator</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="./css/lib/bootstrap.css" />
+		<link rel="stylesheet" href="./css/plasmid.css" />
+		<link rel="stylesheet" href="./css/style.css" />
+		<link rel="stylesheet" href="./css/sandbox2.css" />
+		<script src="./js/lib/modernizr.js"></script>
+		<script src="./js/lib/jquery.js"></script>
+		<script src="./js/lib/bootstrap.js"></script>
+		<script src="./js/lib/anchor.js"></script>
+		<script src="./js/plasmid.js"></script>
+		<script src="./js/sandbox2.js"></script>
+	</head>
+	<body data-spy="scroll" data-target="#header" data-offset="70">
+		<nav id="header" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#" data-anchor="scroll">Plasmid Sandbox</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li>
+							<a id="sandbox-toggle" href="#" data-toggle="play">
+								<span class="glyphicon glyphicon-play"></span>
+							</a>
+						</li>
+						<li>
+							<a id="sandbox-step" href="#">
+								<span class="glyphicon glyphicon-step-forward"></span>
+							</a>
+						</li>
+						<li>
+							<a id="sandbox-refresh" href="#">
+								<span class="glyphicon glyphicon-refresh"></span>
+							</a>
+						</li>
+						<li>
+							<a id="sandbox-random" href="#">
+								<span class="glyphicon glyphicon-random"></span>
+							</a>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="./index.html" >Plasmid</a>
+						</li>
+						<li>
+							<a href="./ca_maze.pdf">Paper</a>
+						</li>
+						<li>
+							<a href="http://github.com/theeluwin/plasmid">GitHub</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div id="container" class="container">
+			<div class="row">
+				<div id="col-sandbox" class="col-xs-12 col-md-9">
+					<div id="sandbox" class="ca-canvas" data-ca="ll" data-row="100" data-col="100" data-rule="12345/3" data-period="0"></div>
+				</div>
+				<div id="col-control" class="col-xs-12 col-md-3">
+					<form role="form">
+						<h3>Query</h3>
+						<div class="form-group">
+							<div class="checkbox">
+								<input id="update-simultaneously" type="checkbox" /> <label for="update-simultaneously">Update simultaneously</label>
+							</div>
+							<button type="button" id="query-btn" class="btn btn-success">Query Now</button>
+						</div>
+						<hr />
+						<ul id="results">
+							<li>Groups: <span id="query-groups">N/A</span></li>
+							<li>Solvable: <span id="query-solvable">N/A</span></li>
+							<li>Propagation Time: <span id="query-propagation-time">0</span>ms</li>
+							<li>Query Time: <span id="query-update-time">0</span>ms</li>
+						</ul>
+						<hr />
+					</form>
+					<form role="form">
+						<h3>Control</h3>
+						<div class="form-group">
+							<label for="iteration-speed">Iteration Speed</label>
+							<input type="number" id="iteration-speed" class="form-control" value="60" />
+						</div>
+						<hr />
+					</form>
+					<form role="form">
+						<h3>Modify</h3>
+						<button type="button" id="reverse-btn" class="btn btn-warning">Reverse</button>
+						<hr />
+						<div class="form-group">
+							<label for="sandbox-size">Size</label>
+							<input type="number" id="sandbox-size" class="form-control" value="100" />
+							<div class="checkbox">
+								<input id="sandbox-size-scale" type="checkbox" /> <label for="sandbox-size-scale">Scale current image</label>
+							</div>
+							<button type="button" id="sandbox-size-btn" class="btn btn-primary">Apply</button>
+						</div>
+						<hr />
+						<div class="form-group">
+							<label for="sandbox-rule">Rule String</label>
+							<input type="text" id="sandbox-rule" class="form-control" value="12345/3" /><br />
+							<button type="button" id="sandbox-rule-btn" class="btn btn-primary">Apply</button>
+						</div>
+						<hr />
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

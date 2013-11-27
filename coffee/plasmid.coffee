@@ -23,11 +23,11 @@ class Plasmid
 			ret.push(temp)
 		return ret
 	
-	int: (arg) ->
-		return parseInt(arg)
+	int: (arg) -> parseInt(arg, 10)
+
+	time: -> new Date().valueOf()
 	
-	rand: ->
-		return Math.random()
+	rand: -> Math.random()
 	
 	print: (arg) ->
 		console.log(arg)
@@ -54,6 +54,71 @@ class Plasmid
 			cols = $(rows[i-1]).children()
 			for j in [1..cols.length] by 1
 				$(cols[j-1]).attr("data-state", @cells[i][j])
+
+	dump: (input = false, clone = true) ->
+		if input instanceof Array and input[0] instanceof Array
+			if input.length is @cells.length and input[0].length is @cells[0].length
+				# Override cells data into input.
+				@cells = if clone then @clone(input) else input
+				@render()
+			else
+				throw 'ReferenceError @ plasmid.dump'
+		else if input is false
+			# return cells.
+			return if clone then @clone(@cells) else @cells
+		else
+			throw 'TypeError @ plasmid.dump'
+
+
+class CanvasPlasmid extends Plasmid
+	constructor: (@canvasWrapper) ->
+		@color = ['#cccccc', '#4d4d4d']
+		super(@canvasWrapper)
+
+		@toggleSaved = {x : -1, y : -1}
+
+	refresh: ->
+		@step = 0
+		@cells = @matrix(@row+2, @col+2)
+		
+		@canvasWrapper.empty()
+		widthMultiplier = @canvasWrapper.width() / @col
+		heightMultiplier = @canvasWrapper.height() / @row
+		@multiplier = @int(Math.min(widthMultiplier, heightMultiplier))
+		
+		@$canvas = $('<canvas />').attr(
+			width: @col * @multiplier
+			height: @row * @multiplier
+		).appendTo(@canvasWrapper)
+
+		@ctx = @$canvas.get(0).getContext('2d')
+		@ctx.fillRect(0, 0, @row, @col)
+		@ctx.scale(@multiplier, @multiplier)
+
+	render: ->
+		@ctx.fillStyle = @color[0]
+		@ctx.fillRect(0, 0, @col, @row)
+		@ctx.fillStyle = @color[1]
+		for i in [1..@col]
+			for j in [1..@row]
+				if @cells[i][j] is 1
+					@ctx.fillRect(i - 1, j - 1, 1, 1)
+
+	drawCell: (x, y)->
+		@ctx.fillStyle = @color[@cells[x][y]]
+		@ctx.fillRect(x - 1, y - 1, 1, 1)
+
+	toggleCell: (x, y) ->
+		@cells[x][y] = 1 - @cells[x][y]
+		@drawCell(x, y)
+
+	toggleCellIfNew: (x, y, reset = false) ->
+		x = 0 | (x / @multiplier) + 1
+		y = 0 | (y / @multiplier) + 1
+		if @toggleSaved.x isnt x or @toggleSaved.y isnt y or reset
+			@toggleCell(x, y)
+			@toggleSaved.x = x
+			@toggleSaved.y = y
 
 
 class Plasmid1D extends Plasmid
@@ -164,3 +229,64 @@ class PlasmidLL extends Plasmid
 				if @cells[i][j] and not @rule.survive[sum] then cells[i][j] = 0
 		@cells = @clone(cells)
 		@render()
+
+
+class CanvasWorkerPlasmidLL extends CanvasPlasmid
+
+	constructor: (@canvas) ->
+		@worker = new Worker('js/plasmid_worker_ll.js')
+		@refreshFlag = false
+		
+		super(@canvas)
+		rule =
+			survive: []
+			birth: []
+		@rule = @rule.split("/")
+		survive = @rule[0]
+		rule.survive.push(0) for i in [0..8]
+		rule.survive[@int(i)] = 1 for i in survive
+		birth = @rule[1]
+		rule.birth.push(0) for i in [0..8]
+		rule.birth[@int(i)] = 1 for i in birth
+		@rule = rule
+		@propagationTime = 0
+
+	refresh: ->
+		super()
+		@stop()
+		@render()
+
+	stop: ->
+		@worker.onmessage = ->
+			return
+		@eventListening = false
+
+	propagate: (callback = false)->
+		_this = this
+		super()
+
+		messageHandler = (event) ->
+			if @refreshFlag
+				@refreshFlag = false
+				return
+
+			_this.cells = event.data.cells
+			if callback isnt false
+				callback()
+
+			_this.propagationTime = _this.time() - event.data.startTime
+
+			_this.render()
+
+		if not @eventListening or (@callback isnt false and callback is false) or (@callback is false and callback isnt false)
+			@eventListening = true
+			@worker.onmessage = messageHandler
+
+		@callback = callback
+		@worker.postMessage(
+			startTime : @time()
+			cells : @cells
+			row : @row
+			col : @col
+			rule : @rule
+		)
