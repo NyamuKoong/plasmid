@@ -5,6 +5,7 @@
 
 	playTimer = false
 	iterationSpeed = 60
+	solvableWorker = new Worker('js/plasmid_worker_solvable.js')
 
 	# Flags
 	draggingFlag = false
@@ -13,6 +14,7 @@
 	bindPlasmid = ->
 		toggle = (e, reset = false) ->
 			plasmid.toggleCellIfNew(e.offsetX, e.offsetY, reset)
+			updateInfoSimulatneously()
 
 		$canvas = $sandbox.children('canvas')
 
@@ -50,7 +52,7 @@
 
 	togglePlaying = ->
 		if toggleIcon($('#sandbox-toggle'), 'play', 'pause') is 'play'
-			play() 
+			play()
 		else
 			pause()
 
@@ -75,16 +77,28 @@
 			
 			plasmid.render()
 
-	# Sidemenu related methods.
-
+	# Update Related Methods
 	stopBeforeModification = ->
 		if playTimer isnt false
 			togglePlaying()
 
+	updateFlag = -1
+	updateStartTime = 0
+	completeUpdate = ->
+		$('#query-update-time').text(plasmid.time() - updateStartTime)
+	
+	solvableWorker.onmessage = (event) ->
+		$('#query-groups').text(event.data)
+		$('#query-solvable').text(event.data == 1)
+		updateFlag--
+		if updateFlag is 0 then completeUpdate()
+
+	# Sidemenu related methods.
 	updateInfo = ->
-		startTime = plasmid.time()
+		updateFlag = 1
+		updateStartTime = plasmid.time()
 		$('#query-propagation-time').text(plasmid.propagationTime)
-		$('#query-update-time').text(plasmid.time() - startTime)
+		solvableWorker.postMessage(plasmid.dump(false, false))
 
 	updateInfoSimulatneously = ->
 		if $('#update-simultaneously:checked').length > 0
