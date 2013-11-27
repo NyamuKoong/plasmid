@@ -35,6 +35,7 @@ play = ->
 
 pause = ->
 	if playTimer isnt false
+		plasmid.stop()
 		clearTimeout(playTimer)
 		playTimer = false
 
@@ -43,21 +44,25 @@ toggleIcon = ($button, iconStr1, iconStr2) ->
 	to = if now is iconStr1 then iconStr2 else iconStr1
 	$button.children().eq(0).removeClass("glyphicon-" + now).addClass("glyphicon-" + to)
 	$button.data('toggle', to)
+	console.log now, to
 	return now
+
+togglePlaying = ->
+	if toggleIcon($('#sandbox-toggle'), 'play', 'pause') is 'play'
+		play() 
+	else
+		pause()
 
 bindButtons = ->
 	$('#sandbox-toggle').click ->
-		if toggleIcon($(this), 'play', 'pause') is 'play'
-			play() 
-		else
-			pause()
+		togglePlaying()
 
 	$('#sandbox-step').click ->
 		plasmid.propagate()
 
 	$('#sandbox-refresh').click ->
 		resetSandbox()
-	
+
 	$('#sandbox-random').click ->
 		total = plasmid.int(plasmid.row * plasmid.col / 4)
 
@@ -74,6 +79,10 @@ bindButtons = ->
 
 # Sidemenu related methods.
 
+stopBeforeModification = ->
+	if playTimer isnt false
+		togglePlaying()
+
 bindSidemenu = ->
 	$('#iteration-speed').change ->
 		iterationSpeed = plasmid.int($(this).val())
@@ -82,7 +91,8 @@ bindSidemenu = ->
 		$(this).val(iterationSpeed)
 
 	$('#sandbox-size-btn').click ->
-		size = plasmid.int($sandbox.data('col'))
+		stopBeforeModification()
+		size = plasmid.col
 		newSize = plasmid.int($('#sandbox-size').val())
 		# Check scale option.
 		scale = $('#sandbox-size-scale:checked').length
@@ -104,6 +114,15 @@ bindSidemenu = ->
 		resetSandbox()
 
 		if scale then plasmid.dump(data)
+
+	$('#reverse-btn').click ->
+		stopBeforeModification()
+		data = plasmid.dump()
+		size = plasmid.col
+		for i in [1..size]
+			for j in  [1..size]
+				data[i][j] = 1 - data[i][j]
+		plasmid.dump(data)
 
 $ ->
 	$sandbox = $('#sandbox')

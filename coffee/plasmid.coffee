@@ -231,6 +231,9 @@ class PlasmidLL extends Plasmid
 class CanvasWorkerPlasmidLL extends CanvasPlasmid
 
 	constructor: (@canvas) ->
+		@worker = new Worker('js/plasmid_worker_ll.js')
+		@refreshFlag = false
+		
 		super(@canvas)
 		rule =
 			survive: []
@@ -243,14 +246,16 @@ class CanvasWorkerPlasmidLL extends CanvasPlasmid
 		rule.birth.push(0) for i in [0..8]
 		rule.birth[@int(i)] = 1 for i in birth
 		@rule = rule
-		@refreshFlag = false
-
-		@worker = new Worker('js/plasmid_worker_ll.js')
 
 	refresh: ->
 		super()
-		@refreshFlag = true
+		@stop()
 		@render()
+
+	stop: ->
+		@worker.onmessage = ->
+			return
+		@eventListening = false
 
 	propagate: (callback = false)->
 		_this = this
