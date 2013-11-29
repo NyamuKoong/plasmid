@@ -1,0 +1,11 @@
+@charset "utf-8";
+.ca-canvas > div > div {
+  height: 100%;
+  display: inline-block;
+}
+.ca-canvas > div > div[data-state="0"] {
+  background-color: #cccccc;
+}
+.ca-canvas > div > div[data-state="1"] {
+  background-color: #999999;
+}
