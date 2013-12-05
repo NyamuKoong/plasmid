@@ -187,6 +187,7 @@
 												cells[x][y] = 1
 												heap.push([x, y])
 						if count_old is count_new then plasmid.cells[I][J] = cells[I][J] = 1
+						count_old = count_new
 			plasmid.render()
 
 		$('#query-btn').click ->

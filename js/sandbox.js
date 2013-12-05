@@ -221,6 +221,7 @@
             if (count_old === count_new) {
               plasmid.cells[I][J] = cells[I][J] = 1;
             }
+            count_old = count_new;
           }
         }
       }
