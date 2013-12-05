@@ -223,7 +223,7 @@
           }
         }
       }
-      return self.postMessage(count);
+      return plasmid.render();
     });
     $('#query-btn').click(function() {
       return updateInfo();
