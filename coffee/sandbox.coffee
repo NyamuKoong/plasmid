@@ -145,7 +145,7 @@
 			plasmid.dump(data, false)
 		
 		$('#punch-btn').click ->
-			cells = plasmid.cells
+			cells = plasmid.clone(plasmid.cells)
 			dir = [[1, 0], [-1, 0], [0, 1], [0, -1]]
 			col = cells.length - 2
 			row = cells[0].length - 2
@@ -167,7 +167,8 @@
 									heap.push([x, y])
 			for I in [1..col] by 1
 				for J in [1..row] by 1
-					if cells[I][J] is 1
+					if plasmid.cells[I][J] is 1
+						cells = plasmid.clone(plasmid.cells)
 						plasmid.cells[I][J] = cells[I][J] = 0
 						count_new = 0
 						for i in [1..col] by 1
@@ -185,7 +186,7 @@
 											if x > 0 and y > 0 and x <= col and y <= row and cells[x][y] is 0
 												cells[x][y] = 1
 												heap.push([x, y])
-						if count_old is count_new then plasmid.cells[I][J] = cells[I][J] = 0
+						if count_old is count_new then plasmid.cells[I][J] = cells[I][J] = 1
 			plasmid.render()
 
 		$('#query-btn').click ->

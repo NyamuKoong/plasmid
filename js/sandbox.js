@@ -163,7 +163,7 @@
     });
     $('#punch-btn').click(function() {
       var I, J, c, cells, col, count_new, count_old, d, dir, heap, i, j, row, x, y, _i, _j, _k, _l, _len, _len1, _m, _n, _o, _p;
-      cells = plasmid.cells;
+      cells = plasmid.clone(plasmid.cells);
       dir = [[1, 0], [-1, 0], [0, 1], [0, -1]];
       col = cells.length - 2;
       row = cells[0].length - 2;
@@ -192,7 +192,8 @@
       }
       for (I = _l = 1; _l <= col; I = _l += 1) {
         for (J = _m = 1; _m <= row; J = _m += 1) {
-          if (cells[I][J] === 1) {
+          if (plasmid.cells[I][J] === 1) {
+            cells = plasmid.clone(plasmid.cells);
             plasmid.cells[I][J] = cells[I][J] = 0;
             count_new = 0;
             for (i = _n = 1; _n <= col; i = _n += 1) {
@@ -218,7 +219,7 @@
               }
             }
             if (count_old === count_new) {
-              plasmid.cells[I][J] = cells[I][J] = 0;
+              plasmid.cells[I][J] = cells[I][J] = 1;
             }
           }
         }
