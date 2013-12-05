@@ -143,6 +143,51 @@
 				for j in  [1..size]
 					data[i][j] = 1 - data[i][j]
 			plasmid.dump(data, false)
+		
+		$('#punch-btn').click ->
+			cells = plasmid.cells
+			dir = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+			col = cells.length - 2
+			row = cells[0].length - 2
+			count_old = 0
+			for i in [1..col] by 1
+				for j in [1..row] by 1
+					if cells[i][j] is 0
+						count_old++
+						heap = []
+						heap.push([i, j])
+						cells[i][j] = 1
+						while heap.length
+							c = heap.pop()
+							for d in dir
+								x = c[0] + d[0]
+								y = c[1] + d[1]
+								if x > 0 and y > 0 and x <= col and y <= row and cells[x][y] is 0
+									cells[x][y] = 1
+									heap.push([x, y])
+			for I in [1..col] by 1
+				for J in [1..row] by 1
+					if cells[I][J] is 1
+						plasmid.cells[I][J] = cells[I][J] = 0
+						count_new = 0
+						for i in [1..col] by 1
+							for j in [1..row] by 1
+								if cells[i][j] is 0
+									count_new++
+									heap = []
+									heap.push([i, j])
+									cells[i][j] = 1
+									while heap.length
+										c = heap.pop()
+										for d in dir
+											x = c[0] + d[0]
+											y = c[1] + d[1]
+											if x > 0 and y > 0 and x <= col and y <= row and cells[x][y] is 0
+												cells[x][y] = 1
+												heap.push([x, y])
+						if count_old is count_new then plasmid.cells[I][J] = cells[I][J] = 0
+	
+			self.postMessage(count)
 
 		$('#query-btn').click ->
 			updateInfo()
